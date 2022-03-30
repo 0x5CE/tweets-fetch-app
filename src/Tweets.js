@@ -25,10 +25,8 @@ function Tweets() {
         async function fetchTweets() {
             const querySnapshot = await getDocs(collection(db, "tweets"));
             
-            setTweets(R.map(doc => doc.data(), querySnapshot.docs));
-
             // sorting by latest first
-            setTweets(tweets.sort(byId, tweets));
+            setTweets(R.sort(byId, R.map(doc => doc.data(), querySnapshot.docs)));
         }
         fetchTweets()
     }, [])
