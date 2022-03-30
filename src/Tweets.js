@@ -19,10 +19,16 @@ function Tweets() {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    const byId = R.descend(R.prop('id'));
+
     useEffect(() => {
         async function fetchTweets() {
             const querySnapshot = await getDocs(collection(db, "tweets"));
+            
             setTweets(R.map(doc => doc.data(), querySnapshot.docs));
+
+            // sorting by latest first
+            setTweets(tweets.sort(byId, tweets));
         }
         fetchTweets()
     }, [])
